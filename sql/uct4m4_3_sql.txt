@@ -1,0 +1,20 @@
+select * from (
+select city from city
+except
+select distinct city
+from city
+join address on address.city_id = city.city_id
+join customer on customer.address_id = address.address_id
+join rental on rental.customer_id = customer.customer_id
+join inventory on inventory.inventory_id = rental.inventory_id
+join film_category on film_category.film_id = inventory.film_id
+where category_id = 11) t 
+order by city;
+
+
+
+
+
+
+
+

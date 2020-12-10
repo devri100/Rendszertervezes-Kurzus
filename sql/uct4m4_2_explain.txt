@@ -1,0 +1,34 @@
+                                                 QUERY PLAN                                                 
+------------------------------------------------------------------------------------------------------------
+ Limit  (cost=1277.07..1277.12 rows=3 width=112)
+   ->  WindowAgg  (cost=1277.07..1277.35 rows=16 width=112)
+         ->  Sort  (cost=1277.07..1277.11 rows=16 width=104)
+               Sort Key: (sum(payment.amount)) DESC
+               ->  HashAggregate  (cost=1276.55..1276.75 rows=16 width=104)
+                     Group Key: category.category_id
+                     ->  Hash Join  (cost=672.24..1203.57 rows=14596 width=78)
+                           Hash Cond: (inventory.film_id = film_category.film_id)
+                           ->  Hash Join  (cost=639.06..969.70 rows=14596 width=8)
+                                 Hash Cond: (rental.inventory_id = inventory.inventory_id)
+                                 ->  Hash Join  (cost=510.99..803.28 rows=14596 width=10)
+                                       Hash Cond: (payment.rental_id = rental.rental_id)
+                                       ->  Seq Scan on payment  (cost=0.00..253.96 rows=14596 width=10)
+                                       ->  Hash  (cost=310.44..310.44 rows=16044 width=8)
+                                             ->  Seq Scan on rental  (cost=0.00..310.44 rows=16044 width=8)
+                                 ->  Hash  (cost=70.81..70.81 rows=4581 width=6)
+                                       ->  Seq Scan on inventory  (cost=0.00..70.81 rows=4581 width=6)
+                           ->  Hash  (cost=20.67..20.67 rows=1000 width=74)
+                                 ->  Hash Join  (cost=1.36..20.67 rows=1000 width=74)
+                                       Hash Cond: (film_category.category_id = category.category_id)
+                                       ->  Seq Scan on film_category  (cost=0.00..16.00 rows=1000 width=4)
+                                       ->  Hash  (cost=1.16..1.16 rows=16 width=72)
+                                             ->  Seq Scan on category  (cost=0.00..1.16 rows=16 width=72)
+
+
+
+
+
+
+
+
+

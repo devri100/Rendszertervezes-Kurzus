@@ -1,0 +1,20 @@
+                                            QUERY PLAN                                            
+--------------------------------------------------------------------------------------------------
+ WindowAgg  (cost=2311.22..2314.72 rows=200 width=33)
+   ->  Sort  (cost=2311.22..2311.72 rows=200 width=25)
+         Sort Key: (count(rental.rental_id)) DESC
+         ->  HashAggregate  (cost=2301.58..2303.58 rows=200 width=25)
+               Group Key: actor.actor_id
+               ->  Hash Right Join  (cost=302.11..1866.26 rows=87063 width=21)
+                     Hash Cond: (inventory.film_id = film_actor.film_id)
+                     ->  Hash Right Join  (cost=128.07..480.67 rows=16044 width=6)
+                           Hash Cond: (rental.inventory_id = inventory.inventory_id)
+                           ->  Seq Scan on rental  (cost=0.00..310.44 rows=16044 width=8)
+                           ->  Hash  (cost=70.81..70.81 rows=4581 width=6)
+                                 ->  Seq Scan on inventory  (cost=0.00..70.81 rows=4581 width=6)
+                     ->  Hash  (cost=105.76..105.76 rows=5462 width=19)
+                           ->  Hash Join  (cost=6.50..105.76 rows=5462 width=19)
+                                 Hash Cond: (film_actor.actor_id = actor.actor_id)
+                                 ->  Seq Scan on film_actor  (cost=0.00..84.62 rows=5462 width=4)
+                                 ->  Hash  (cost=4.00..4.00 rows=200 width=17)
+                                       ->  Seq Scan on actor  (cost=0.00..4.00 rows=200 width=17)
